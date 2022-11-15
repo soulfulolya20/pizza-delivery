@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -22,6 +23,11 @@ public class CourierController {
     @GetMapping(value = "/{courierId}")
     public Optional<CourierEntity> getCourier(@PathVariable("courierId") Long courierId) {
         return courierService.getCourier(courierId);
+    }
+
+    @GetMapping
+    public List<String> getAllCouriers() {
+        return courierService.getAllCouriers();
     }
 
     @PostMapping

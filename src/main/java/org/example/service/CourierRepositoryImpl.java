@@ -11,10 +11,16 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class CourierRepositoryImpl implements CourierRepository {
+
+    private static final String
+            SQL_GET_ALL_COURIERS =
+            "select CONCAT_WS(' ', courier_id, first_name, middle_name, last_name) from courier";
 
     private static final String
             SQL_GET_COURIER_BY_ID =
@@ -73,5 +79,10 @@ public class CourierRepositoryImpl implements CourierRepository {
         var params = new MapSqlParameterSource();
         params.addValue("courierId", courierId);
         jdbcTemplate.update(SQL_DELETE_COURIER, params);
+    }
+
+    @Override
+    public List<String> findAllCouriers() {
+        return jdbcTemplate.queryForList(SQL_GET_ALL_COURIERS, new HashMap<>(), String.class);
     }
 }

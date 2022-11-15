@@ -8,6 +8,7 @@ import org.example.service.api.CourierService;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Primary
@@ -28,6 +29,11 @@ public class CourierServiceImpl implements CourierService {
     @Override
     public void createCourier(CourierRequest request) {
         courierRepository.insertCourier(request);
+    }
+
+    @Override
+    public List<String> getAllCouriers() {
+        return courierRepository.findAllCouriers();
     }
 
     @Override
