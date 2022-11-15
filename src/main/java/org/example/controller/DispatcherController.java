@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -27,6 +28,11 @@ public class DispatcherController {
     @ResponseStatus(HttpStatus.CREATED)
     public void createDispatcher(@Valid @RequestBody DispatcherRequest request) {
         dispatcherService.createDispatcher(request);
+    }
+
+    @GetMapping
+    public List<String> getAllDispatchers() {
+        return dispatcherService.getAllDispatchers();
     }
 
     @PutMapping(value = "/{dispatcherId}")

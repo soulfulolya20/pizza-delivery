@@ -8,6 +8,7 @@ import org.example.service.api.DispatcherService;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Primary
@@ -40,5 +41,10 @@ public class DispatcherServiceImpl implements DispatcherService {
     public void deleteDispatcher(Long dispatcherId) {
     var dispatcher = dispatcherRepository.getDispatcherById(dispatcherId).orElseThrow(() -> new DispatcherNotFoundException(dispatcherId));
     dispatcherRepository.deleteDispatcherById(dispatcher.dispatcherId());
+    }
+
+    @Override
+    public List<String> getAllDispatchers() {
+        return dispatcherRepository.findAllDispatchers();
     }
 }

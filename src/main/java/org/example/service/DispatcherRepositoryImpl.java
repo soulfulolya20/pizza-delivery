@@ -9,11 +9,16 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class DispatcherRepositoryImpl implements DispatcherRepository {
 
+    private static final String
+            SQL_GET_ALL_DISPATCHERS =
+            "select CONCAT_WS(' ', dispatcher_id, first_name, middle_name, last_name) from dispatcher";
     private static final String
             SQL_GET_DISPATCHER_BY_ID =
             "select dispatcher_id, first_name, middle_name, last_name, phone from dispatcher where dispatcher_id = :dispatcherId";
@@ -71,6 +76,11 @@ public class DispatcherRepositoryImpl implements DispatcherRepository {
         var params = new MapSqlParameterSource();
         params.addValue("dispatcherId", dispatcherId);
         jdbcTemplate.update(SQL_DELETE_DISPATCHER, params);
+    }
+
+    @Override
+    public List<String> findAllDispatchers() {
+        return jdbcTemplate.queryForList(SQL_GET_ALL_DISPATCHERS, new HashMap<>(), String.class);
     }
 }
 
