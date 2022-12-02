@@ -1,12 +1,9 @@
 package org.example.service;
 
-import org.example.dao.repository.CourierRepository;
+import org.example.repository.CourierRepository;
 import org.example.mapper.CourierMapper;
-import org.example.mapper.DispatcherMapper;
 import org.example.models.entity.CourierEntity;
 import org.example.models.entity.CourierRequest;
-import org.example.models.entity.DispatcherEntity;
-import org.example.models.entity.DispatcherRequest;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;

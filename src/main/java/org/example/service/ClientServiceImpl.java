@@ -2,7 +2,7 @@ package org.example.service;
 
 import org.example.exception.ClientNotFoundException;
 import org.example.models.entity.ClientEntity;
-import org.example.dao.repository.ClientRepository;
+import org.example.repository.ClientRepository;
 import org.example.models.entity.ProfileRequest;
 import org.example.models.entity.ProfileUpdateRequest;
 import org.example.service.api.ClientService;

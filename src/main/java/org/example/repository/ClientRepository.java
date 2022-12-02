@@ -1,4 +1,4 @@
-package org.example.dao.repository;
+package org.example.repository;
 
 import org.example.models.entity.ClientEntity;
 import org.example.models.entity.ProfileRequest;

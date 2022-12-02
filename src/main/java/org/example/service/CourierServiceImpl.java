@@ -1,6 +1,6 @@
 package org.example.service;
 
-import org.example.dao.repository.CourierRepository;
+import org.example.repository.CourierRepository;
 import org.example.exception.CourierNotFoundException;
 import org.example.models.entity.CourierEntity;
 import org.example.models.entity.CourierRequest;

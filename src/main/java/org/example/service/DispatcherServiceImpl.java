@@ -1,6 +1,6 @@
 package org.example.service;
 
-import org.example.dao.repository.DispatcherRepository;
+import org.example.repository.DispatcherRepository;
 import org.example.exception.DispatcherNotFoundException;
 import org.example.models.entity.DispatcherEntity;
 import org.example.models.entity.DispatcherRequest;

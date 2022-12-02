@@ -1,10 +1,9 @@
 package org.example.service;
 
-import org.example.dao.repository.DispatcherRepository;
+import org.example.repository.DispatcherRepository;
 import org.example.mapper.DispatcherMapper;
 import org.example.models.entity.DispatcherEntity;
 import org.example.models.entity.DispatcherRequest;
-import org.example.service.api.DispatcherService;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;

@@ -2,10 +2,9 @@ package org.example.service;
 
 import org.example.mapper.ClientMapper;
 import org.example.models.entity.ClientEntity;
-import org.example.dao.repository.ClientRepository;
+import org.example.repository.ClientRepository;
 import org.example.models.entity.ProfileRequest;
 import org.example.models.entity.ProfileUpdateRequest;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
