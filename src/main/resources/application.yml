@@ -1,6 +1,26 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/pizzadelivery
-    username: root
-    password: "1234"
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/pizzadelivery
+    username: postgres
+    password: postgres
+
+server:
+  error:
+    include-message: on-param
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger
+
+logging:
+  pattern:
+    console: "%white(%d{ISO8601}) %highlight(%-5level) [%blue(%t{20})] %yellow(%C{40}): %msg%n%throwable"
+  level:
+    org.example.PizzaDeliveryApplication: DEBUG
+
+security:
+  disabled:
+    paths: "/swagger**,/auth/login,/auth/register,/v3/api-docs**"
+

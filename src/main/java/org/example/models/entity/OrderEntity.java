@@ -1,5 +1,7 @@
 package org.example.models.entity;
 
+import java.time.LocalDateTime;
+
 public record OrderEntity(
      Long orderId,
      Long clientId,
@@ -7,6 +9,7 @@ public record OrderEntity(
      Long dispatcherId,
      String note,
      Boolean isFormed,
-     Boolean isComplete
+     Boolean isComplete,
+     LocalDateTime formedDttm
 ) {
 }

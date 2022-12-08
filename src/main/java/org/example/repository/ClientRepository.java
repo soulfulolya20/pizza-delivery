@@ -13,6 +13,7 @@ public interface ClientRepository {
     void insertClient(ProfileRequest request);
 
     List<String> findAllClients();
+
     void updateClient(ProfileUpdateRequest request);
 
     void deleteClientById(Long id);

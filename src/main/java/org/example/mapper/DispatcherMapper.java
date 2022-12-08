@@ -10,7 +10,6 @@ import java.sql.SQLException;
 @Component
 public class DispatcherMapper implements RowMapper<DispatcherEntity> {
 
-
     @Override
     public DispatcherEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new DispatcherEntity(

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 @Component
 public class OrderMapper implements RowMapper<OrderEntity> {
@@ -19,7 +20,8 @@ public class OrderMapper implements RowMapper<OrderEntity> {
                 rs.getLong("dispatcher_id"),
                 rs.getString("note"),
                 rs.getBoolean("is_formed"),
-                rs.getBoolean("is_complete")
+                rs.getBoolean("is_complete"),
+                rs.getObject("formed_date", LocalDateTime.class)
         );
     }
 }
