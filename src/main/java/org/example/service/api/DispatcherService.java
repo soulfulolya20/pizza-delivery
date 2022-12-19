@@ -14,4 +14,8 @@ public interface DispatcherService {
     void deleteDispatcher(Long dispatcherId);
 
     DispatcherEntity getDispatcherByUserId(Long userId);
+
+    Boolean isDispatcher(Long userId);
+
+    void deleteDispatcherByUserId(Long userId);
 }

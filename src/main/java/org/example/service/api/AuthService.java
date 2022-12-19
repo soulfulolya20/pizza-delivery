@@ -18,4 +18,8 @@ public interface AuthService {
     void checkRoles(ScopeType[] roles, String accessToken);
 
     Boolean isCourier();
+
+    Boolean isDispatcher();
+
+    Boolean isAdmin();
 }

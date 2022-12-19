@@ -62,8 +62,17 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void register(RegisterRequestDTO requestDTO) {
-        UserEntity savedUser = userService.save(new UserEntity().setPhone(requestDTO.getPhone()).setPassword(encryptPassword(requestDTO.getPassword())));
-        clientService.createClient(new ProfileRequest(requestDTO.getFirstName(), requestDTO.getMiddleName(), requestDTO.getLastName(), savedUser.getUserId()));
+        String code = environment.getProperty("code");
+        UserEntity savedUser = userService.save(new UserEntity()
+                .setPhone(requestDTO.getPhone())
+                .setPassword(encryptPassword(requestDTO.getPassword()))
+                .setFirstName(requestDTO.getFirstName())
+                .setLastName(requestDTO.getLastName())
+                .setMiddleName(requestDTO.getMiddleName()));
+        if (code.equals(requestDTO.getCode())) {
+            userService.setAdmin(savedUser.getUserId());
+        }
+        clientService.createClient(new ProfileRequest(savedUser.getUserId()));
     }
 
     @Override
@@ -99,6 +108,7 @@ public class AuthServiceImpl implements AuthService {
                         courierService.getCourierByUserId(userId);
                         isAuth = true;
                     }
+                    case ADMIN -> isAuth = userService.isAdmin(userId);
                 }
             } catch (Exception ignored) {
             }
@@ -112,6 +122,18 @@ public class AuthServiceImpl implements AuthService {
     public Boolean isCourier() {
         UserEntity user = userService.getCurrentUser();
         return courierService.isCourier(user.getUserId());
+    }
+
+    @Override
+    public Boolean isDispatcher() {
+        UserEntity user = userService.getCurrentUser();
+        return dispatcherService.isDispatcher(user.getUserId());
+    }
+
+    @Override
+    public Boolean isAdmin() {
+        UserEntity user = userService.getCurrentUser();
+        return userService.isAdmin(user.getUserId());
     }
 
     private String encryptPassword(String password) {

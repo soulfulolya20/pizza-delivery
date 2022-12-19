@@ -69,16 +69,22 @@ public class OrderController {
         return orderService.getOrderHistory();
     }
 
-    @GetMapping(value = "/available")
+    @GetMapping(value = "/available/{status}")
     @AuthRole(roles = ScopeType.COURIER)
-    public List<OrderResponseDTO> getAvailableOrders() {
-        return orderService.getAvailableOrders();
+    public List<OrderResponseDTO> getAvailableOrders(@PathVariable("status") String status) {
+        return orderService.getAvailableOrders(status);
     }
 
     @PostMapping(value = "/{orderId}/claim")
     @AuthRole(roles = ScopeType.COURIER)
     public void claimOrder(@PathVariable("orderId") Long orderId) {
         orderService.claimOrder(orderId);
+    }
+
+    @PostMapping(value = "/{orderId}/cook")
+    @AuthRole(roles = ScopeType.DISPATCHER)
+    public void cookOrder(@PathVariable("orderId") Long orderId) {
+        orderService.cookOrder(orderId);
     }
 
     @GetMapping(value = "/current")

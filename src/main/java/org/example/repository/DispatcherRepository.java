@@ -18,4 +18,8 @@ public interface DispatcherRepository {
     void deleteDispatcherById(Long dispatcherId);
 
     Optional<DispatcherEntity> getDispatcherByUserId(Long userId);
+
+    Boolean isDispatcher(Long userId);
+
+    void deleteDispatcherByUserId(Long userId);
 }

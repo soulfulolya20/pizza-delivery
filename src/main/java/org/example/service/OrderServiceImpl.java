@@ -110,8 +110,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderResponseDTO> getAvailableOrders() {
-        List<OrderEntity> orders = orderRepository.getAvailableOrders();
+    public List<OrderResponseDTO> getAvailableOrders(String status) {
+        List<OrderEntity> orders = orderRepository.getAvailableOrders(status);
         return orders.stream().map(orderEntity -> {
             OrderResponseDTO orderDTO = new OrderResponseDTO();
             orderDTO.setOrderId(orderEntity.orderId());
@@ -134,6 +134,10 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponseDTO getCurrentOrderByCourierId(Long courierId) {
         OrderEntity orderEntity = orderRepository.getCurrentCourierOrder(courierId);
 
+        if (orderEntity == null) {
+            return null;
+        }
+
         OrderResponseDTO orderDTO = new OrderResponseDTO();
         Double total = 0.0;
 
@@ -149,5 +153,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void deliverOrder(Long orderId) {
         orderRepository.changeOrderStatus(orderId, StatusType.COMPLETED);
+    }
+
+    @Override
+    public void cookOrder(Long orderId) {
+        orderRepository.changeOrderStatus(orderId, StatusType.COOKING);
     }
 }

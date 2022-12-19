@@ -17,4 +17,6 @@ public interface CourierService {
     CourierEntity getCourierByUserId(Long userId);
 
     Boolean isCourier(Long userId);
+
+    void deleteCourierByUserId(Long userId);
 }

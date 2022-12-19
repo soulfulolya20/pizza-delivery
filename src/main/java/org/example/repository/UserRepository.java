@@ -1,5 +1,6 @@
 package org.example.repository;
 
+import org.example.models.dto.UserAdminPageDTO;
 import org.example.models.entity.UserEntity;
 
 public interface UserRepository {
@@ -11,4 +12,10 @@ public interface UserRepository {
     void save(UserEntity entity);
 
     UserEntity getById(Long id);
+
+    Boolean isAdmin(Long userId);
+
+    UserAdminPageDTO findByPhoneForAdmin(String phone);
+
+    void setAdmin(Long userId);
 }

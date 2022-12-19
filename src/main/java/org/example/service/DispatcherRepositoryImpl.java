@@ -29,7 +29,7 @@ public class DispatcherRepositoryImpl implements DispatcherRepository {
 
     private static final String
             SQL_INSERT_DISPATCHER =
-            "insert into dispatcher (first_name, middle_name, last_name, phone) values (:firstName, :middleName, :lastName, :phone)";
+            "insert into dispatcher (user_id) values (:userId) on conflict (user_id) do update set fired = false";
 
     private static final String
             SQL_UPDATE_DISPATCHER =
@@ -57,10 +57,7 @@ public class DispatcherRepositoryImpl implements DispatcherRepository {
     @Override
     public void insertDispatcher(DispatcherRequest request) {
         var params = new MapSqlParameterSource();
-        params.addValue("firstName", request.firstName());
-        params.addValue("middleName", request.middleName());
-        params.addValue("lastName", request.lastName());
-        params.addValue("phone", request.phone());
+        params.addValue("userId", request.userId());
         jdbcTemplate.update(SQL_INSERT_DISPATCHER, params);
     }
 
@@ -68,10 +65,6 @@ public class DispatcherRepositoryImpl implements DispatcherRepository {
     public void updateDispatcher(DispatcherRequest request, Long dispatcherId) {
         var params = new MapSqlParameterSource();
         params.addValue("dispatcherId", dispatcherId);
-        params.addValue("firstName", request.firstName());
-        params.addValue("middleName", request.middleName());
-        params.addValue("lastName", request.lastName());
-        params.addValue("phone", request.phone());
         jdbcTemplate.update(SQL_UPDATE_DISPATCHER, params);
     }
 
@@ -86,6 +79,17 @@ public class DispatcherRepositoryImpl implements DispatcherRepository {
     public Optional<DispatcherEntity> getDispatcherByUserId(Long userId) {
         return jdbcTemplate.query(SQL_GET_DISPATCHER_BY_USER_ID, Map.of("userId", userId), dispatcherMapper)
                 .stream().findFirst();
+    }
+
+    @Override
+    public Boolean isDispatcher(Long userId) {
+        return jdbcTemplate.queryForObject("select exists(select * from dispatcher where user_id=:userId and fired is not true)",
+                Map.of("userId", userId), Boolean.class);
+    }
+
+    @Override
+    public void deleteDispatcherByUserId(Long userId) {
+        jdbcTemplate.update("update dispatcher set fired = true where user_id = :userId", Map.of("userId", userId));
     }
 
     @Override

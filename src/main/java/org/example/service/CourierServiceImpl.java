@@ -55,5 +55,10 @@ public class CourierServiceImpl implements CourierService {
     public Boolean isCourier(Long userId) {
         return courierRepository.isCourier(userId);
     }
+
+    @Override
+    public void deleteCourierByUserId(Long userId) {
+        courierRepository.deleteCourierByUserId(userId);
+    }
 }
 

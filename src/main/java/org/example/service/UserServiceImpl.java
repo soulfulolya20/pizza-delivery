@@ -6,8 +6,12 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.RequiredArgsConstructor;
+import org.example.models.dto.UserAdminPageDTO;
 import org.example.models.entity.UserEntity;
+import org.example.models.enums.ScopeType;
 import org.example.repository.UserRepository;
+import org.example.service.api.CourierService;
+import org.example.service.api.DispatcherService;
 import org.example.service.api.UserService;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
@@ -18,12 +22,18 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
+    private final CourierService courierService;
+
+    private final DispatcherService dispatcherService;
 
     private final Environment environment;
 
@@ -64,5 +74,34 @@ public class UserServiceImpl implements UserService {
 
         Long userId = decodedJWT.getClaim("userId").asLong();
         return getById(userId);
+    }
+
+    @Override
+    public Boolean isAdmin(Long userId) {
+        return userRepository.isAdmin(userId);
+    }
+
+    @Override
+    public UserAdminPageDTO getUserAdminForm(String phone) {
+        UserAdminPageDTO user = userRepository.findByPhoneForAdmin(phone);
+        if (user == null) {
+            return null;
+        }
+        List<ScopeType> roles = new ArrayList<>();
+        roles.add(ScopeType.CLIENT);
+        if (courierService.isCourier(user.getUserId())) {
+            roles.add(ScopeType.COURIER);
+        }
+        if (dispatcherService.isDispatcher(user.getUserId())) {
+            roles.add(ScopeType.DISPATCHER);
+        }
+        user.setRoles(roles);
+
+        return user;
+    }
+
+    @Override
+    public void setAdmin(Long userId) {
+        userRepository.setAdmin(userId);
     }
 }

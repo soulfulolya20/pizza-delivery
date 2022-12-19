@@ -1,6 +1,7 @@
 package org.example.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.models.dto.UserAdminPageDTO;
 import org.example.models.entity.UserEntity;
 import org.example.repository.UserRepository;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -42,5 +43,28 @@ public class UserRepositoryImpl implements UserRepository {
     public UserEntity getById(Long id) {
         return jdbcTemplate.queryForObject(FIND_BY_USER_ID, Map.of("id", id),
                 (rs, rowNum) -> new UserEntity().setUserId(rs.getLong(1)).setPhone(rs.getString(2)));
+    }
+
+    @Override
+    public Boolean isAdmin(Long userId) {
+        return jdbcTemplate.queryForObject("select is_admin from \"user\" where user_id = :userId", Map.of("userId", userId),
+                Boolean.class);
+    }
+
+    @Override
+    public UserAdminPageDTO findByPhoneForAdmin(String phone) {
+        return jdbcTemplate.query("""
+                select * from "user" where phone = :phone
+                """, Map.of("phone", phone), (rs, rowNum) -> new UserAdminPageDTO()
+                .setUserId(rs.getLong("user_id"))
+                .setPhone(rs.getString("phone"))
+                .setFirstName(rs.getString("first_name"))
+                .setLastName(rs.getString("last_name"))
+                .setMiddleName(rs.getString("middle_name"))).stream().findFirst().orElse(null);
+    }
+
+    @Override
+    public void setAdmin(Long userId) {
+        jdbcTemplate.update("update \"user\" set is_admin = true where user_id = :userId", Map.of("userId", userId));
     }
 }

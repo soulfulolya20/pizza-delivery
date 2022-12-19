@@ -29,11 +29,13 @@ public interface OrderService {
 
     List<PizzaOrderItemResponseDTO> getOrderItems(Long orderId);
 
-    List<OrderResponseDTO> getAvailableOrders();
+    List<OrderResponseDTO> getAvailableOrders(String status);
 
     void claimOrder(Long orderId);
 
     OrderResponseDTO getCurrentOrderByCourierId(Long courierId);
 
     void deliverOrder(Long orderId);
+
+    void cookOrder(Long orderId);
 }

@@ -50,6 +50,16 @@ public class DispatcherServiceImpl implements DispatcherService {
     }
 
     @Override
+    public Boolean isDispatcher(Long userId) {
+        return dispatcherRepository.isDispatcher(userId);
+    }
+
+    @Override
+    public void deleteDispatcherByUserId(Long userId) {
+        dispatcherRepository.deleteDispatcherByUserId(userId);
+    }
+
+    @Override
     public List<String> getAllDispatchers() {
         return dispatcherRepository.findAllDispatchers();
     }

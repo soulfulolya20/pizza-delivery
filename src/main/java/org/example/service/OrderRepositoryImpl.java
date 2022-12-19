@@ -142,20 +142,20 @@ public class OrderRepositoryImpl implements OrderRepository {
     @Override
     public OrderEntity getCurrentCourierOrder(Long courierId) {
         return jdbcTemplate.query(SQL_GET_ORDER_BY_COURIER_ID, Map.of("courierId", courierId), orderMapper)
-                .stream().findFirst().orElseThrow(() -> new RuntimeException("У вас нет текущих заказов"));
+                .stream().findFirst().orElse(null);
     }
 
     @Override
-    public List<OrderEntity> getAvailableOrders() {
+    public List<OrderEntity> getAvailableOrders(String status) {
         return jdbcTemplate.query("""
-                select * from "order" where (status = 'FORMED' or status = 'COOKING') and courier_id is null order by formed_dttm;
-                """, Map.of(), orderMapper);
+                select * from "order" where status = :status and courier_id is null order by formed_dttm;
+                """, Map.of("status", status), orderMapper);
     }
 
     @Override
     public void changeOrderStatus(Long orderId, StatusType status) {
         jdbcTemplate.update("""
-                update "order" set status = 'COMPLETED' where order_id = :orderId
-                """, Map.of("orderId", orderId));
+                update "order" set status = :status where order_id = :orderId
+                """, Map.of("orderId", orderId, "status", status.name()));
     }
 }

@@ -22,5 +22,7 @@ public interface CourierRepository {
     Optional<CourierEntity> getCourierByUserId(Long userId);
 
     Boolean isCourier(Long userId);
+
+    void deleteCourierByUserId(Long userId);
 }
 

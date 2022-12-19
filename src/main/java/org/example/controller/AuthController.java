@@ -39,4 +39,14 @@ public class AuthController {
     public Boolean isCourier() {
         return authService.isCourier();
     }
+
+    @GetMapping("/is-dispatcher")
+    public Boolean isDispatcher() {
+        return authService.isDispatcher();
+    }
+
+    @GetMapping("/is-admin")
+    public Boolean isAdmin() {
+        return authService.isAdmin();
+    }
 }

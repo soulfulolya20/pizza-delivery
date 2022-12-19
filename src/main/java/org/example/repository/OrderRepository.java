@@ -32,7 +32,7 @@ public interface OrderRepository {
 
     OrderEntity getCurrentCourierOrder(Long courierId);
 
-    List<OrderEntity> getAvailableOrders();
+    List<OrderEntity> getAvailableOrders(String status);
 
     void changeOrderStatus(Long orderId, StatusType status);
 }

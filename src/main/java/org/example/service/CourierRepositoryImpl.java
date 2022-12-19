@@ -18,19 +18,22 @@ public class CourierRepositoryImpl implements CourierRepository {
 
     private static final String
             SQL_GET_ALL_COURIERS =
-            "select CONCAT_WS(' ', courier_id, first_name, middle_name, last_name) from courier";
+            "select CONCAT_WS(' ', courier_id, first_name, middle_name, last_name) " +
+                    "from courier inner join \"user\" u on u.user_id = courier.user_id";
 
     private static final String
             SQL_GET_COURIER_BY_ID =
-            "select courier_id, first_name, middle_name, last_name, phone from courier where courier_id = :courierId";
+            "select courier_id, first_name, middle_name, last_name, phone " +
+                    "from courier inner join \"user\" u on u.user_id = courier.user_id where courier_id = :courierId";
 
     private static final String
             SQL_GET_COURIER_BY_USER_ID =
-            "select courier_id, first_name, middle_name, last_name, phone from courier where user_id = :userId";
+            "select courier_id, first_name, middle_name, last_name, phone " +
+                    "from courier inner join \"user\" u on u.user_id = courier.user_id where courier.user_id = :userId";
 
     private static final String
             SQL_INSERT_COURIER =
-            "insert into courier (first_name, middle_name, last_name, phone) values (:firstName, :middleName, :lastName, :phone)";
+            "insert into courier (user_id) values (:userId) on conflict (user_id) do update set fired = false";
 
     private static final String
             SQL_UPDATE_COURIER =
@@ -58,10 +61,7 @@ public class CourierRepositoryImpl implements CourierRepository {
     @Override
     public void insertCourier(CourierRequest request) {
         var params = new MapSqlParameterSource();
-        params.addValue("firstName", request.firstName());
-        params.addValue("middleName", request.middleName());
-        params.addValue("lastName", request.lastName());
-        params.addValue("phone", request.phone());
+        params.addValue("userId", request.userId());
         jdbcTemplate.update(SQL_INSERT_COURIER, params);
     }
 
@@ -69,10 +69,6 @@ public class CourierRepositoryImpl implements CourierRepository {
     public void updateCourier(CourierRequest request, Long courierId) {
         var params = new MapSqlParameterSource();
         params.addValue("courierId", courierId);
-        params.addValue("firstName", request.firstName());
-        params.addValue("middleName", request.middleName());
-        params.addValue("lastName", request.lastName());
-        params.addValue("phone", request.phone());
         jdbcTemplate.update(SQL_UPDATE_COURIER, params);
     }
 
@@ -91,8 +87,13 @@ public class CourierRepositoryImpl implements CourierRepository {
 
     @Override
     public Boolean isCourier(Long userId) {
-        return jdbcTemplate.queryForObject("select exists(select * from courier where user_id=:userId)",
+        return jdbcTemplate.queryForObject("select exists(select * from courier where user_id=:userId and fired is not true)",
                 Map.of("userId", userId), Boolean.class);
+    }
+
+    @Override
+    public void deleteCourierByUserId(Long userId) {
+        jdbcTemplate.update("update courier set fired = true where user_id = :userId", Map.of("userId", userId));
     }
 
     @Override
