@@ -33,7 +33,11 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public UserEntity findByPhoneWithoutPassword(String phone) {
         return jdbcTemplate.queryForObject(FIND_BY_PHONE_WITHOUT_PASSWORD, Map.of("phone", phone),
-                (rs, rowNum) -> new UserEntity().setUserId(rs.getLong(1)).setPhone(rs.getString(2)));
+                (rs, rowNum) -> new UserEntity().setUserId(rs.getLong("user_id"))
+                        .setPhone(rs.getString("phone"))
+                        .setFirstName(rs.getString("first_name"))
+                        .setLastName(rs.getString("last_name"))
+                        .setMiddleName(rs.getString("middle_name")));
     }
 
     @Override
@@ -47,7 +51,11 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public UserEntity getById(Long id) {
         return jdbcTemplate.queryForObject(FIND_BY_USER_ID, Map.of("id", id),
-                (rs, rowNum) -> new UserEntity().setUserId(rs.getLong(1)).setPhone(rs.getString(2)));
+                (rs, rowNum) -> new UserEntity().setUserId(rs.getLong("user_id"))
+                        .setPhone(rs.getString("phone"))
+                        .setFirstName(rs.getString("first_name"))
+                        .setLastName(rs.getString("last_name"))
+                        .setMiddleName(rs.getString("middle_name")));
     }
 
     @Override

@@ -81,9 +81,9 @@ public class AuthServiceImpl implements AuthService {
         ClientEntity client = clientService.getClientByUserId(user.getUserId());
         return new ProfileDTO()
                 .setUserId(user.getUserId())
-                .setFirstName(client.firstName())
-                .setLastName(client.lastName())
-                .setMiddleName(client.middleName())
+                .setFirstName(user.getFirstName())
+                .setLastName(user.getLastName())
+                .setMiddleName(user.getMiddleName())
                 .setPhone(user.getPhone())
                 .setScope(List.of(ScopeType.CLIENT));
     }
