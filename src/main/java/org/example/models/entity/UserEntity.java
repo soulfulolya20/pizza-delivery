@@ -9,7 +9,7 @@ public class UserEntity {
 
     private Long userId;
 
-    private String login;
+    private String phone;
 
     private String password;
 }

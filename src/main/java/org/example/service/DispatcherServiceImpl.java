@@ -44,6 +44,12 @@ public class DispatcherServiceImpl implements DispatcherService {
     }
 
     @Override
+    public DispatcherEntity getDispatcherByUserId(Long userId) {
+        return dispatcherRepository.getDispatcherByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Не найден диспетчер с userId=" + userId));
+    }
+
+    @Override
     public List<String> getAllDispatchers() {
         return dispatcherRepository.findAllDispatchers();
     }

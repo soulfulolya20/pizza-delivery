@@ -18,7 +18,6 @@ public class ClientMapper implements RowMapper<ClientEntity> {
                 rs.getString("first_name"),
                 rs.getString("middle_name"),
                 rs.getString("last_name"),
-                rs.getString("phone"),
                 rs.getString("client_address")
         );
     }

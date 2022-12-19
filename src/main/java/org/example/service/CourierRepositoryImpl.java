@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -22,6 +23,10 @@ public class CourierRepositoryImpl implements CourierRepository {
     private static final String
             SQL_GET_COURIER_BY_ID =
             "select courier_id, first_name, middle_name, last_name, phone from courier where courier_id = :courierId";
+
+    private static final String
+            SQL_GET_COURIER_BY_USER_ID =
+            "select courier_id, first_name, middle_name, last_name, phone from courier where user_id = :userId";
 
     private static final String
             SQL_INSERT_COURIER =
@@ -76,6 +81,18 @@ public class CourierRepositoryImpl implements CourierRepository {
         var params = new MapSqlParameterSource();
         params.addValue("courierId", courierId);
         jdbcTemplate.update(SQL_DELETE_COURIER, params);
+    }
+
+    @Override
+    public Optional<CourierEntity> getCourierByUserId(Long userId) {
+        return jdbcTemplate.query(SQL_GET_COURIER_BY_USER_ID, Map.of("userId", userId), courierMapper)
+                .stream().findFirst();
+    }
+
+    @Override
+    public Boolean isCourier(Long userId) {
+        return jdbcTemplate.queryForObject("select exists(select * from courier where user_id=:userId)",
+                Map.of("userId", userId), Boolean.class);
     }
 
     @Override

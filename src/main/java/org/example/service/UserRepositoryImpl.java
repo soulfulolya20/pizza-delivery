@@ -12,29 +12,35 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
 
-    private static final String FIND_BY_LOGIN = "select user_id, login, password from \"user\" where login = :login";
-    private static final String FIND_BY_USER_ID = "select user_id, login from \"user\" where user_id = :id";
+    private static final String FIND_BY_PHONE = "select user_id, phone, password from \"user\" where phone = :phone";
+    private static final String FIND_BY_PHONE_WITHOUT_PASSWORD = "select user_id, phone from \"user\" where phone = :phone";
+    private static final String FIND_BY_USER_ID = "select user_id, phone from \"user\" where user_id = :id";
     private static final String SAVE = """
-            insert into "user" (login, password) VALUES (:login, :password)
+            insert into "user" (phone, password) VALUES (:phone, :password)
             """;
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     @Override
-    public UserEntity findByLogin(String login) {
+    public UserEntity findByPhone(String phone) {
+        return jdbcTemplate.queryForObject(FIND_BY_PHONE, Map.of("phone", phone),
+                (rs, rowNum) -> new UserEntity().setUserId(rs.getLong(1)).setPhone(rs.getString(2)).setPassword(rs.getString(3)));
+    }
 
-        return jdbcTemplate.queryForObject(FIND_BY_LOGIN, Map.of("login", login),
-                (rs, rowNum) -> new UserEntity().setUserId(rs.getLong(1)).setLogin(rs.getString(2)).setPassword(rs.getString(3)));
+    @Override
+    public UserEntity findByPhoneWithoutPassword(String phone) {
+        return jdbcTemplate.queryForObject(FIND_BY_PHONE_WITHOUT_PASSWORD, Map.of("phone", phone),
+                (rs, rowNum) -> new UserEntity().setUserId(rs.getLong(1)).setPhone(rs.getString(2)));
     }
 
     @Override
     public void save(UserEntity entity) {
-        jdbcTemplate.update(SAVE, Map.of("login", entity.getLogin(), "password", entity.getPassword()));
+        jdbcTemplate.update(SAVE, Map.of("phone", entity.getPhone(), "password", entity.getPassword()));
     }
 
     @Override
     public UserEntity getById(Long id) {
         return jdbcTemplate.queryForObject(FIND_BY_USER_ID, Map.of("id", id),
-                (rs, rowNum) -> new UserEntity().setUserId(rs.getLong(1)).setLogin(rs.getString(2)));
+                (rs, rowNum) -> new UserEntity().setUserId(rs.getLong(1)).setPhone(rs.getString(2)));
     }
 }

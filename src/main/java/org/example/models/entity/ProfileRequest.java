@@ -10,8 +10,6 @@ public record ProfileRequest(
         String middleName,
         @NotNull
         String lastName,
-        @NotNull
-        String phone,
-        @NotNull
-        String clientAddress
+
+        Long userId
 ){}

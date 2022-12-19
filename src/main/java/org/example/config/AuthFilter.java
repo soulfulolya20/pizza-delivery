@@ -11,6 +11,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -33,6 +34,7 @@ public class AuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (token == null) {
+            log.error("Токен не найден");
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Токен не найден");
         }
 
@@ -53,6 +55,10 @@ public class AuthFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
         log.debug(path);
+
+        if (request.getMethod().equals(RequestMethod.OPTIONS.name())) {
+            return true;
+        }
 
         return checkExclusions(path, excludeAuthPoints());
     }

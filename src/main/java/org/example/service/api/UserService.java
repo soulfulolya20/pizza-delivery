@@ -6,7 +6,9 @@ public interface UserService {
 
     UserEntity findByLogin(String login);
 
-    void save(UserEntity entity);
+    UserEntity save(UserEntity entity);
 
     UserEntity getById(Long id);
+
+    UserEntity getCurrentUser();
 }

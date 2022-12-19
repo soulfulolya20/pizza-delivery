@@ -17,6 +17,7 @@ public class PizzaMapper implements RowMapper<PizzaEntity> {
                 rs.getDouble("pizza_price"),
                 rs.getString("pizza_name"),
                 rs.getInt("pizza_size"),
-                rs.getBoolean("is_available"));
+                rs.getBoolean("is_available"),
+                rs.getString("image_url"));
     }
 }

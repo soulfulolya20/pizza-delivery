@@ -9,6 +9,7 @@ public record PizzaEntity(
         Double pizzaPrice,
         String pizzaName,
         int pizzaSize,
-        Boolean isAvailable
+        Boolean isAvailable,
+        String imageUrl
 ) {
 }

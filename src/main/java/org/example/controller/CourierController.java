@@ -15,7 +15,6 @@ import java.util.Optional;
 public class CourierController {
     private final CourierService courierService;
 
-
     public CourierController(CourierService courierService) {
         this.courierService = courierService;
     }

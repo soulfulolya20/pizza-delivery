@@ -12,4 +12,6 @@ public interface DispatcherService {
 
     List<String> getAllDispatchers();
     void deleteDispatcher(Long dispatcherId);
+
+    DispatcherEntity getDispatcherByUserId(Long userId);
 }

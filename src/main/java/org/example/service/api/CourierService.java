@@ -13,4 +13,8 @@ public interface CourierService {
     List<String> getAllCouriers();
     void updateCourier(CourierRequest request, Long courierId);
     void deleteCourier(Long courierId);
+
+    CourierEntity getCourierByUserId(Long userId);
+
+    Boolean isCourier(Long userId);
 }

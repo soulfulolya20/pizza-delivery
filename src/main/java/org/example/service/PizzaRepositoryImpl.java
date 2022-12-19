@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PizzaRepositoryImpl implements PizzaRepository {
 
-    private static final String SELECT_ALL = "select pizza_id, pizza_name, is_available from pizza where pizza_size = 32";
+    private static final String SELECT_ALL = "select pizza_id, pizza_name, is_available, pizza_price, image_url from pizza where pizza_size = 32";
     private static final String SELECT_BY_ID = "select * from pizza where pizza_id = :pizzaId";
 
     private final PizzaMapper pizzaMapper;
@@ -27,7 +27,9 @@ public class PizzaRepositoryImpl implements PizzaRepository {
 
     @Override
     public List<PizzaEntity> getAllPizza() {
-        return jdbcTemplate.query(SELECT_ALL, new HashMap<>(), (rs, rowNum) -> new PizzaEntity(rs.getLong(1), null, null, rs.getString(2), 32, rs.getBoolean(3)));
+        return jdbcTemplate.query(SELECT_ALL, new HashMap<>(), (rs, rowNum) ->
+                new PizzaEntity(rs.getLong(1), null, rs.getDouble(4),
+                        rs.getString(2), 32, rs.getBoolean(3), rs.getString(5)));
     }
 
     @Override

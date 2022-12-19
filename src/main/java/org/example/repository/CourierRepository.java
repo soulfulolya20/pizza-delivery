@@ -18,5 +18,9 @@ public interface CourierRepository {
     void updateCourier(CourierRequest request, Long courierId);
 
     void deleteCourierById(Long courierId);
+
+    Optional<CourierEntity> getCourierByUserId(Long userId);
+
+    Boolean isCourier(Long userId);
 }
 

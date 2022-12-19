@@ -1,5 +1,6 @@
 package org.example.service;
 
+import lombok.RequiredArgsConstructor;
 import org.example.repository.CourierRepository;
 import org.example.exception.CourierNotFoundException;
 import org.example.models.entity.CourierEntity;
@@ -11,15 +12,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Primary
 @Service
+@RequiredArgsConstructor
 public class CourierServiceImpl implements CourierService {
+
     private final CourierRepository courierRepository;
-
-    public CourierServiceImpl(CourierRepository courierRepository) {
-        this.courierRepository = courierRepository;
-    }
-
 
     @Override
     public Optional<CourierEntity> getCourier(Long courierId) {
@@ -46,6 +43,17 @@ public class CourierServiceImpl implements CourierService {
     public void deleteCourier(Long courierId) {
         var dispatcher = courierRepository.getCourierById(courierId).orElseThrow(() -> new CourierNotFoundException(courierId));
         courierRepository.deleteCourierById(dispatcher.courierId());
+    }
+
+    @Override
+    public CourierEntity getCourierByUserId(Long userId) {
+        return courierRepository.getCourierByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Не найден курьер с userId=" + userId));
+    }
+
+    @Override
+    public Boolean isCourier(Long userId) {
+        return courierRepository.isCourier(userId);
     }
 }
 

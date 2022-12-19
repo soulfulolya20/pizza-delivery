@@ -17,4 +17,6 @@ public interface ClientRepository {
     void updateClient(ProfileUpdateRequest request);
 
     void deleteClientById(Long id);
+
+    Optional<ClientEntity> getClientByUserId(Long userId);
 }

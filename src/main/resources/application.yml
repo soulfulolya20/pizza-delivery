@@ -5,10 +5,6 @@ spring:
     username: postgres
     password: postgres
 
-server:
-  error:
-    include-message: on-param
-
 springdoc:
   swagger-ui:
     enabled: true
@@ -22,5 +18,5 @@ logging:
 
 security:
   disabled:
-    paths: "/swagger**,/auth/login,/auth/register,/v3/api-docs**"
+    paths: "/swagger**,/auth/login,/auth/register,/v3/api-docs**,/pizza"
 

@@ -7,7 +7,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RegisterRequestDTO {
 
-    private String login;
+    private String phone;
 
     private String password;
+
+    private String lastName;
+
+    private String firstName;
+
+    private String middleName;
 }

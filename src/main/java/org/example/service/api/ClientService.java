@@ -14,4 +14,8 @@ public interface ClientService {
     void updateClient(ProfileUpdateRequest request);
     
     void deleteProfile(Long clientId);
+
+    ClientEntity getClientByUserId(Long userId);
+
+    ClientEntity getCurrentClient();
 }

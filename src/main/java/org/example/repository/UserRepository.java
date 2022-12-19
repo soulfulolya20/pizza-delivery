@@ -4,7 +4,9 @@ import org.example.models.entity.UserEntity;
 
 public interface UserRepository {
 
-    UserEntity findByLogin(String login);
+    UserEntity findByPhone(String phone);
+
+    UserEntity findByPhoneWithoutPassword(String phone);
 
     void save(UserEntity entity);
 

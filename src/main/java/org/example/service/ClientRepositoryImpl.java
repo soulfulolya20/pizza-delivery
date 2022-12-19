@@ -21,15 +21,19 @@ public class ClientRepositoryImpl implements ClientRepository {
             "select CONCAT_WS(' ', client_id, first_name, middle_name, last_name) from client";
     private static final String
             SQL_GET_PROFILE_BY_ID =
-            "select client_id, first_name, middle_name, last_name, phone, client_address from client where client_id = :id";
+            "select client_id, first_name, middle_name, last_name, client_address from client where client_id = :id";
+
+    private static final String
+            SQL_GET_PROFILE_BY_USER_ID =
+            "select client_id, first_name, middle_name, last_name, client_address from client where user_id = :userId";
 
     private static final String
             SQL_INSERT_PROFILE =
-            "insert into client (first_name, middle_name, last_name, phone, client_address) values (:firstName, :middleName, :lastName, :phone, :clientAddress)";
+            "insert into client (first_name, middle_name, last_name, user_id) values (:firstName, :middleName, :lastName, :userId)";
 
     private static final String
             SQL_UPDATE_PROFILE =
-            "update client set first_name = :firstName, middle_name = :middleName, last_name = :lastName, phone = :phone, client_address = :clientAddress where client_id = :clientId";
+            "update client set first_name = :firstName, middle_name = :middleName, last_name = :lastName, client_address = :clientAddress where client_id = :clientId";
 
     private static final String
             SQL_DELETE_PROFILE =
@@ -48,13 +52,19 @@ public class ClientRepositoryImpl implements ClientRepository {
     }
 
     @Override
+    public Optional<ClientEntity> getClientByUserId(Long userId) {
+        var params = new MapSqlParameterSource();
+        params.addValue("userId", userId);
+        return jdbcTemplate.query(SQL_GET_PROFILE_BY_USER_ID, params, clientMapper).stream().findFirst();
+    }
+
+    @Override
     public void insertClient(ProfileRequest request) {
         var params = new MapSqlParameterSource();
         params.addValue("firstName", request.firstName());
         params.addValue("middleName", request.middleName());
         params.addValue("lastName", request.lastName());
-        params.addValue("phone", request.phone());
-        params.addValue("clientAddress", request.clientAddress());
+        params.addValue("userId", request.userId());
         jdbcTemplate.update(SQL_INSERT_PROFILE, params);
     }
 
@@ -65,7 +75,6 @@ public class ClientRepositoryImpl implements ClientRepository {
         params.addValue("firstName", request.firstName());
         params.addValue("middleName", request.middleName());
         params.addValue("lastName", request.lastName());
-        params.addValue("phone", request.phone());
         params.addValue("clientAddress", request.clientAddress());
         jdbcTemplate.update(SQL_UPDATE_PROFILE, params);
     }

@@ -16,4 +16,6 @@ public interface DispatcherRepository {
     void updateDispatcher(DispatcherRequest request, Long dispatcherId);
 
     void deleteDispatcherById(Long dispatcherId);
+
+    Optional<DispatcherEntity> getDispatcherByUserId(Long userId);
 }
