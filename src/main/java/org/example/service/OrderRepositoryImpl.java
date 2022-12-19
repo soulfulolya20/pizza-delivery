@@ -158,4 +158,11 @@ public class OrderRepositoryImpl implements OrderRepository {
                 update "order" set status = :status where order_id = :orderId
                 """, Map.of("orderId", orderId, "status", status.name()));
     }
+
+    @Override
+    public void cancelClientOrder(Long orderId, Long clientId) {
+        jdbcTemplate.update("""
+                update "order" set status = 'CANCELED' where order_id = :orderId and client_id = :clientId
+                """, Map.of("clientId", clientId, "orderId", orderId));
+    }
 }

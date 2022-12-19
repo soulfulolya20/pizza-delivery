@@ -75,6 +75,12 @@ public class OrderController {
         return orderService.getAvailableOrders(status);
     }
 
+    @PostMapping(value = "/{orderId}/cancel")
+    @AuthRole(roles = ScopeType.CLIENT)
+    public void cancelOrder(@PathVariable("orderId") Long orderId) {
+        orderService.cancelClientOrder(orderId);
+    }
+
     @PostMapping(value = "/{orderId}/claim")
     @AuthRole(roles = ScopeType.COURIER)
     public void claimOrder(@PathVariable("orderId") Long orderId) {

@@ -35,5 +35,7 @@ public interface OrderRepository {
     List<OrderEntity> getAvailableOrders(String status);
 
     void changeOrderStatus(Long orderId, StatusType status);
+
+    void cancelClientOrder(Long orderId, Long userId);
 }
 

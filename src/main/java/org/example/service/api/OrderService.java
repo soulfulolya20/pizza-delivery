@@ -38,4 +38,6 @@ public interface OrderService {
     void deliverOrder(Long orderId);
 
     void cookOrder(Long orderId);
+
+    void cancelClientOrder(Long orderId);
 }

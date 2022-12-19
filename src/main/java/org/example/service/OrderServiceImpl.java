@@ -159,4 +159,10 @@ public class OrderServiceImpl implements OrderService {
     public void cookOrder(Long orderId) {
         orderRepository.changeOrderStatus(orderId, StatusType.COOKING);
     }
+
+    @Override
+    public void cancelClientOrder(Long orderId) {
+        ClientEntity client = clientService.getCurrentClient();
+        orderRepository.cancelClientOrder(orderId, client.clientId());
+    }
 }

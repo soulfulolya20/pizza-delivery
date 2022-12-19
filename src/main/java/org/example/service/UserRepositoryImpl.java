@@ -13,11 +13,11 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
 
-    private static final String FIND_BY_PHONE = "select user_id, phone, password from \"user\" where phone = :phone";
-    private static final String FIND_BY_PHONE_WITHOUT_PASSWORD = "select user_id, phone from \"user\" where phone = :phone";
-    private static final String FIND_BY_USER_ID = "select user_id, phone from \"user\" where user_id = :id";
+    private static final String FIND_BY_PHONE = "select user_id, phone, first_name, last_name, middle_name, password from \"user\" where phone = :phone";
+    private static final String FIND_BY_PHONE_WITHOUT_PASSWORD = "select user_id, first_name, last_name, middle_name, phone from \"user\" where phone = :phone";
+    private static final String FIND_BY_USER_ID = "select user_id, first_name, last_name, middle_name, phone from \"user\" where user_id = :id";
     private static final String SAVE = """
-            insert into "user" (phone, password) VALUES (:phone, :password)
+            insert into "user" (phone, first_name, last_name, middle_name, password) VALUES (:phone, :firstName, :lastName, :middleName, :password)
             """;
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
@@ -25,7 +25,9 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public UserEntity findByPhone(String phone) {
         return jdbcTemplate.queryForObject(FIND_BY_PHONE, Map.of("phone", phone),
-                (rs, rowNum) -> new UserEntity().setUserId(rs.getLong(1)).setPhone(rs.getString(2)).setPassword(rs.getString(3)));
+                (rs, rowNum) -> new UserEntity().setUserId(rs.getLong("user_id"))
+                        .setPhone(rs.getString("phone"))
+                        .setPassword(rs.getString("password")));
     }
 
     @Override
@@ -36,7 +38,10 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void save(UserEntity entity) {
-        jdbcTemplate.update(SAVE, Map.of("phone", entity.getPhone(), "password", entity.getPassword()));
+        jdbcTemplate.update(SAVE, Map.of("firstName", entity.getFirstName(),
+                "phone", entity.getPhone(), "password", entity.getPassword(),
+                "middleName", entity.getMiddleName(),
+                "lastName", entity.getLastName()));
     }
 
     @Override
